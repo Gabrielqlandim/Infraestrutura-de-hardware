@@ -1,0 +1,27 @@
+    .data
+msg_soma: .asciiz "%d\n"
+
+    .text
+    .globl main
+
+    li $t0, 0               
+    li $t1, 1                
+
+while_loop:
+    beq $t1, 0, end_while    
+
+   
+    li $v0, 5                
+    syscall
+    move $t1, $v0            
+
+    add $t0, $t0, $t1        
+    j while_loop             
+
+end_while:
+    move $a0, $t0            
+    li $v0, 1                
+    syscall
+
+    li $v0, 10               
+    syscall
