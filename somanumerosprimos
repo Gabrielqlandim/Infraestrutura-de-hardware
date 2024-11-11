@@ -1,0 +1,45 @@
+    .text
+is_prime:
+    li $t1, 2
+    li $v0, 1
+
+prime_check_loop:
+    mul $t2, $t1, $t1
+    bgt $t2, $t0, end_prime_check
+
+    div $t3, $t0, $t1
+    mfhi $t4
+    beq $t4, $zero, not_prime
+
+    addi $t1, $t1, 1
+    j prime_check_loop
+
+not_prime:
+    li $v0, 0
+
+end_prime_check:
+    jr $ra
+
+main:
+    li $t5, 0
+    move $t0, $a0
+
+sum_primes:
+    bgt $t0, $a1, end
+
+    jal is_prime
+    beq $v0, 0, next
+
+    add $t5, $t5, $t0
+
+next:
+    addi $t0, $t0, 1
+    j sum_primes
+
+end:
+    li $v0, 1
+    move $a0, $t5
+    syscall
+
+    li $v0, 10
+    syscall

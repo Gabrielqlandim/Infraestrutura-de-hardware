@@ -1,0 +1,54 @@
+.data
+prompt:     .asciiz "Digite o valor de N: "
+result_msg: .asciiz "O fatorial de N é: "
+newline:    .asciiz "\n"
+
+.text
+.globl main
+
+main:
+    li $v0, 4
+    la $a0, prompt
+    syscall
+
+    li $v0, 5
+    syscall
+    move $t0, $v0
+
+    move $a0, $t0
+    jal factorial
+    move $t1, $v0
+
+    li $v0, 4
+    la $a0, result_msg
+    syscall
+
+    li $v0, 1
+    move $a0, $t1
+    syscall
+
+    li $v0, 4
+    la $a0, newline
+    syscall
+
+    li $v0, 10
+    syscall
+
+factorial:
+    li $v0, 1
+    ble $a0, 1, fact_return
+
+    addi $sp, $sp, -8
+    sw $ra, 4($sp)
+    sw $a0, 0($sp)
+
+    addi $a0, $a0, -1
+    jal factorial
+    lw $a0, 0($sp)
+    mul $v0, $a0, $v0
+
+    lw $ra, 4($sp)
+    addi $sp, $sp, 8
+
+fact_return:
+    jr $ra

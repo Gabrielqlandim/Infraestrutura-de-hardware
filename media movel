@@ -1,0 +1,20 @@
+    .data
+msg_invalid: .asciiz "N inválido\n"
+newline: .asciiz "\n"
+
+    .text
+main:
+    li $v0, 5
+    syscall
+    move $t0, $v0
+
+    li $t1, 6
+    blt $t0, $t1, invalid_input
+
+invalid_input:
+    la $a0, msg_invalid
+    li $v0, 4
+    syscall
+
+    li $v0, 10
+    syscall
